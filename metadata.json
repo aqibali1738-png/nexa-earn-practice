@@ -1,0 +1,6 @@
+{
+  "name": "Nexa Earn",
+  "description": "Production-ready, mobile-first web application for Nexa Earn with role-based access, WhatsApp verification, user dashboard, and admin management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
