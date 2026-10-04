@@ -12,7 +12,7 @@ async function startServer() {
   const app = express();
   const PORT = process.env.PORT || 3000;
 
-  // Mount Cloudflare Pages-compatible Hono API Router for /api/* routes
+  // Mount Vercel-compatible Hono API Router for /api/* routes
   const apiRouter = createApiRouter();
   const honoListener = getRequestListener(apiRouter.fetch);
 

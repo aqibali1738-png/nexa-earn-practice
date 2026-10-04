@@ -19,12 +19,12 @@ export type AppEnv = {
   Variables: Variables;
 };
 
-// Environment variable resolver for Cloudflare Pages (c.env) and Node.js (process.env)
+// Environment variable resolver for Vercel Serverless (process.env) and Edge (c.env / process.env)
 export function getEnv(c: Context<AppEnv>, key: keyof Bindings | string): string {
   const envObj = (c.env as any) || {};
   return (
-    envObj[key] ||
     (typeof process !== 'undefined' ? (process.env as any)?.[key] : '') ||
+    envObj[key] ||
     ''
   );
 }

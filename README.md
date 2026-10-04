@@ -1,6 +1,6 @@
 # Nexa Earn Platform
 
-A modern reward and community verification portal built with React 19, Vite 8, Tailwind CSS v4, Supabase (Authentication & PostgreSQL), and Cloudflare Pages Functions.
+A modern reward and community verification portal built with React 19, Vite 8, Tailwind CSS v4, Supabase (Authentication & PostgreSQL), and Vercel Serverless Functions.
 
 ---
 
@@ -9,19 +9,18 @@ A modern reward and community verification portal built with React 19, Vite 8, T
 - **Supabase Authentication**: User registration, login, JWT session management, role-based access (User & Admin).
 - **Account Verification Workflow**: Official WhatsApp community membership submission and approval bonus.
 - **Admin Control Panel**: Real-time user management, request review/approval/rejection, dynamic settings, and audit logs.
-- **Cloudflare Edge Deployment**: Compatible with Cloudflare Pages Functions (`functions/api/[[route]].ts`) and SPA fallback routing (`public/_redirects`).
-- **Full-Stack Parity**: Supports local Node.js server (`server.ts`) and Cloudflare serverless edge execution.
+- **Vercel Serverless & Edge Ready**: Full-stack compatibility with Vercel (`api/index.ts` and `vercel.json`).
+- **Zero-Config Routing**: Client-side SPA routing (`/`, `/user`, `/admin`, etc.) and backend `/api/*` routes are handled cleanly without 404s.
+- **Full-Stack Parity**: Supports local development server (`server.ts`) and Vercel cloud deployment.
 
 ---
 
 ## Project Structure
 
 ```
-├── functions/
-│   └── api/
-│       └── [[route]].ts         # Cloudflare Pages Functions edge router
-├── public/
-│   └── _redirects               # SPA client-side fallback (/* /index.html 200)
+├── api/
+│   └── index.ts                 # Vercel Serverless / Edge entry point for /api/*
+├── vercel.json                  # Vercel build, framework preset, and rewrite routing
 ├── src/
 │   ├── components/
 │   │   ├── admin/               # Admin panel components
@@ -82,16 +81,28 @@ A modern reward and community verification portal built with React 19, Vite 8, T
 
 ---
 
-## How to Deploy to Cloudflare Pages
+## How to Deploy to Vercel
 
-1. In the **Cloudflare Dashboard**, navigate to **Workers & Pages** $\rightarrow$ **Create application** $\rightarrow$ **Pages** $\rightarrow$ **Connect to Git** (or direct upload).
-2. Set build settings:
-   - **Framework Preset**: `Vite` (or `None`)
-   - **Build command**: `npm run build`
-   - **Build output directory**: `dist`
-3. Add **Environment Variables** in Cloudflare Pages:
-   - `VITE_SUPABASE_URL`: Your Supabase URL
-   - `VITE_SUPABASE_ANON_KEY`: Your Supabase anon key
-   - `SUPABASE_SERVICE_ROLE_KEY`: Your Supabase service role secret
-   - `NODE_VERSION`: `20`
-4. Deploy! Cloudflare Pages will automatically mount `functions/api/[[route]].ts` on the Edge network.
+### Step 1: Import Repository
+1. Log in to [Vercel](https://vercel.com).
+2. Click **Add New...** $\rightarrow$ **Project**.
+3. Import your GitHub repository (`nexa-earn-practice`).
+
+### Step 2: Configure Project Settings
+Vercel automatically detects the `vercel.json` configuration:
+- **Framework Preset**: `Vite`
+- **Build Command**: `npm run build`
+- **Output Directory**: `dist`
+- **Install Command**: `npm install`
+
+### Step 3: Add Environment Variables
+In the Vercel project deployment screen (or under **Project Settings $\rightarrow$ Environment Variables**), add:
+
+| Variable Name | Environment | Description |
+| :--- | :--- | :--- |
+| `VITE_SUPABASE_URL` | Production, Preview, Development | Public Supabase URL (e.g., `https://mcpyplosttwinubfeets.supabase.co`) |
+| `VITE_SUPABASE_ANON_KEY` | Production, Preview, Development | Public Supabase anon key |
+| `SUPABASE_SERVICE_ROLE_KEY` | Production, Preview, Development | Private Supabase service role key (used securely by `/api/*` serverless functions) |
+
+### Step 4: Deploy
+Click **Deploy**. Vercel will build the frontend assets into `dist/` and deploy `api/index.ts` as the serverless API handler.
